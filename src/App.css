@@ -1,8 +1,9 @@
 #root {
   width: 100vw;
   max-width: 1440px;
+  height: 100vh;
   margin: 0;
-  padding: 1rem 2rem;
+  padding: 0;
   text-align: center;
   display: flex;
   flex-direction: column;
