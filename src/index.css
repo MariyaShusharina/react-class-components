@@ -1,0 +1,59 @@
+:root {
+  font-family: CenturyGothic, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  --blue: rgb(55, 174, 210);
+  --light-blue: rgb(155, 226, 248);
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: CenturyGothic;
+  src: url('./assets/fonts/CenturyGothic.ttf');
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--blue);
+}
+
+button,
+input {
+  margin: 1rem;
+  padding: 0.3rem;
+  font-family: CenturyGothic, Arial, sans-serif;
+  border-radius: 0;
+  transition: background-color 0.4s ease-in-out;
+}
+
+button {
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+}
+
+button:hover {
+  background-color: var(--light-blue);
+}
+
+@media (prefers-color-scheme: light) {
+}
