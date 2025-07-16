@@ -3,6 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
 
+  --dark-blue: rgb(23, 122, 152);
   --blue: rgb(55, 174, 210);
   --light-blue: rgb(155, 226, 248);
 
@@ -30,7 +31,9 @@ h1 {
 }
 
 a {
+  color: var(--dark-blue);
   text-decoration: none;
+  transition: color 0.4s ease-in-out;
 }
 
 a:hover {
