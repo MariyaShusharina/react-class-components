@@ -32,16 +32,13 @@ export default class Main extends Component {
     localStorage.setItem('PokemonAPIMariyaShusharina', JSON.stringify(data));
   };
 
-  filterPokemons = (ev: React.ChangeEvent) => {
+  filterPokemons = async (ev: React.ChangeEvent) => {
     const localData: DataPokemons = JSON.parse(
       localStorage.PokemonAPIMariyaShusharina
     );
 
-    console.log(localData);
-
     if (ev.target instanceof HTMLInputElement && ev.target.value !== '') {
       const val: string = ev.target.value;
-      console.log(val);
 
       const cardsArr: Card[] = [];
 
@@ -77,6 +74,10 @@ export default class Main extends Component {
 
   updateFunc() {
     this.setState({ stateChanged: this.state.stateChanged + 1 });
+  }
+
+  componentDidMount(): void {
+    this.search();
   }
 
   render() {
