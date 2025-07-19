@@ -11,6 +11,15 @@ import './results-section.css';
 export default class Results extends Component {
   cards: Card[] = [];
 
+  async throwAnError() {
+    const query: string = 'https://pokeapi.co/api/v2/pokemon/error';
+
+    const result = await fetch(query);
+    const errorData = await result;
+
+    console.log(errorData);
+  }
+
   render() {
     let shouldUpdate = localStorage.PokeNeedsUpdateMariyaShusharina;
 
@@ -46,7 +55,9 @@ export default class Results extends Component {
           )}
         </div>
         <div className="error-btn-container">
-          <button className="error-btn">Throw an Error</button>
+          <button className="error-btn" onClick={this.throwAnError}>
+            Throw an Error
+          </button>
         </div>
       </section>
     );

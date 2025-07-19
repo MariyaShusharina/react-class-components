@@ -14,6 +14,8 @@ interface Card {
 }
 
 import { Component } from 'react';
+import ErrorBoundary from './results-section/message-components/error-boundary.tsx';
+import ErrorMessage from './results-section/message-components/error-message.tsx';
 import Results from './results-section/results-section.tsx';
 import './main-component.css';
 
@@ -91,7 +93,9 @@ export default class Main extends Component {
             onChange={this.filterPokemons}
           ></input>
         </section>
-        <Results key={this.state.stateChanged} />
+        <ErrorBoundary fallback={ErrorMessage}>
+          <Results key={this.state.stateChanged} />
+        </ErrorBoundary>
       </main>
     );
   }
