@@ -3,24 +3,44 @@ interface ErrorBoundaryElement {
 }
 
 import { Component, type ReactNode } from 'react';
-import ErrorMessage from './error-message.tsx';
 import '../results-section.css';
-import type { ErrorInfo } from 'react-dom/client';
 
 export default class ErrorBoundary extends Component<ErrorBoundaryElement> {
-  state = { isError: false };
+  /*
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  */
+  state = {
+    hasError: false,
+    error: '',
+  };
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    return `Error: ${error}/n More Info: ${errorInfo}`;
+  static getDerivedStateFromError(error: Error) {
+    console.log(`getDerivedStateFromError: ${error}`);
+    return {
+      hasError: true,
+      error: error,
+    };
   }
 
-  static getDerivedStateFromError(/* error: Error */) {
-    return { isError: true };
+  componentDidCatch(error: Error) {
+    console.log(`componentDidCatch: ${error}`);
+    return {
+      hasError: true,
+      error: error,
+    };
   }
 
   render() {
-    if (this.state.isError) {
-      return <ErrorMessage />;
+    if (this.state.hasError) {
+      return (
+        <div className="error-message">
+          <p>{this.state.error.toString()}</p>
+          <p>Something went wrong! </p>
+        </div>
+      );
     } else {
       return this.props.children;
     }

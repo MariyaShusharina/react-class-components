@@ -7,6 +7,9 @@
   --blue: rgb(55, 174, 210);
   --light-blue: rgb(155, 226, 248);
 
+  --dark-red: rgb(158, 0, 0);
+  --transparent-red: rgba(255, 0, 0, 0.1);
+
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

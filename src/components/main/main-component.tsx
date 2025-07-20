@@ -13,8 +13,9 @@ interface Card {
   source: string;
 }
 
-import { Component } from 'react';
+import { Component /* , type ReactNode */ } from 'react';
 import ErrorBoundary from './results-section/message-components/error-boundary.tsx';
+import ErrorButton from './results-section/error-button/error-button.tsx';
 import Results from './results-section/results-section.tsx';
 import './main-component.css';
 
@@ -23,7 +24,7 @@ export default class Main extends Component {
     stateChanged: 0,
   };
 
-  search = async () => {
+  async search() {
     const query: string =
       'https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0';
 
@@ -31,20 +32,28 @@ export default class Main extends Component {
     const data: JSON = await result.json();
 
     localStorage.setItem('PokemonAPIMariyaShusharina', JSON.stringify(data));
-  };
+  }
 
-  filterPokemons = async (ev: React.ChangeEvent) => {
+  storeQuery(ev: React.ChangeEvent) {
+    if (ev.target instanceof HTMLInputElement && ev.target.value !== '') {
+      const val: string = ev.target.value;
+
+      localStorage.setItem('PokemonQueryMariyaShusharina', val);
+    }
+  }
+
+  filterPokemons = async (/* ev: React.MouseEvent */) => {
     const localData: DataPokemons = JSON.parse(
       localStorage.PokemonAPIMariyaShusharina
     );
 
-    if (ev.target instanceof HTMLInputElement && ev.target.value !== '') {
-      const val: string = ev.target.value;
+    const localQuery: string = localStorage.PokemonQueryMariyaShusharina;
 
+    if (localQuery !== '') {
       const cardsArr: Card[] = [];
 
       for (let i: number = 0; i < localData.results.length; i++) {
-        if (localData.results[i].name.includes(val)) {
+        if (localData.results[i].name.includes(localQuery)) {
           const pokeId: number = i + 1;
           let pokeName = localData.results[i].name;
           pokeName = pokeName[0].toUpperCase() + pokeName.slice(1);
@@ -68,6 +77,8 @@ export default class Main extends Component {
         'PokeNeedsUpdateMariyaShusharina',
         JSON.stringify('true')
       );
+    } else {
+      throw Error('Search query is empty!');
     }
 
     this.updateFunc();
@@ -78,6 +89,7 @@ export default class Main extends Component {
   }
 
   componentDidMount(): void {
+    localStorage.setItem('PokemonQueryMariyaShusharina', '');
     this.search();
   }
 
@@ -89,11 +101,15 @@ export default class Main extends Component {
             type="search"
             className="search-field"
             placeholder="Your input..."
-            onChange={this.filterPokemons}
+            onChange={this.storeQuery}
           ></input>
+          <button onClick={this.filterPokemons}>Search</button>
         </section>
         <ErrorBoundary>
           <Results key={this.state.stateChanged} />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <ErrorButton />
         </ErrorBoundary>
       </main>
     );
