@@ -10,11 +10,13 @@ export default class ErrorButton extends Component {
     this.setState({
       hasError: true,
     });
-    throw Error('Test Error.');
+    // throw Error('Test Error.');
   }
 
   render() {
-    console.log(this.state.hasError);
+    if (this.state.hasError) {
+      throw new Error('Test Error');
+    }
     return (
       <div className="error-btn-container" key={this.state.hasError.toString()}>
         <button className="error-btn" onClick={this.throwAnError}>

@@ -15,13 +15,13 @@ interface Card {
 
 import { Component /* , type ReactNode */ } from 'react';
 import ErrorBoundary from './results-section/message-components/error-boundary.tsx';
-import ErrorButton from './results-section/error-button/error-button.tsx';
 import Results from './results-section/results-section.tsx';
 import './main-component.css';
 
 export default class Main extends Component {
   state = {
     stateChanged: 0,
+    hasError: false,
   };
 
   async search() {
@@ -78,6 +78,7 @@ export default class Main extends Component {
         JSON.stringify('true')
       );
     } else {
+      this.setState({ hasError: true });
       throw Error('Search query is empty!');
     }
 
@@ -88,12 +89,23 @@ export default class Main extends Component {
     this.setState({ stateChanged: this.state.stateChanged + 1 });
   }
 
+  throwAnError() {
+    console.log(this.state.hasError);
+    this.setState({ hasError: true });
+    // throw Error('Test Error.');
+  }
+
   componentDidMount(): void {
     localStorage.setItem('PokemonQueryMariyaShusharina', '');
     this.search();
   }
 
   render() {
+    if (this.state.hasError) {
+      console.log(this.state.stateChanged);
+      console.log(this.state.hasError);
+      throw new Error('Test Error');
+    }
     return (
       <main>
         <section className="search-section">
@@ -109,7 +121,14 @@ export default class Main extends Component {
           <Results key={this.state.stateChanged} />
         </ErrorBoundary>
         <ErrorBoundary>
-          <ErrorButton />
+          <div
+            className="error-btn-container"
+            key={this.state.hasError.toString()}
+          >
+            <button className="error-btn" onClick={this.throwAnError}>
+              Throw an Error
+            </button>
+          </div>
         </ErrorBoundary>
       </main>
     );
