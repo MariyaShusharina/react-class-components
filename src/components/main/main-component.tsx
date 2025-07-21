@@ -13,15 +13,30 @@ interface Card {
   source: string;
 }
 
+interface State {
+  stateChanged: number;
+  hasSearchError: boolean;
+  searchError: string;
+  hasResultError: boolean;
+  resultError: string;
+  hasTestError: boolean;
+  testError: string;
+}
+
 import { Component /* , type ReactNode */ } from 'react';
 import ErrorBoundary from '../error-boundary/error-boundary.tsx';
 import Results from './results-section/results-section.tsx';
 import './main-component.css';
 
 export default class Main extends Component {
-  state = {
+  state: State = {
     stateChanged: 0,
-    hasError: false,
+    hasSearchError: false,
+    searchError: 'NoSearchError',
+    hasResultError: false,
+    resultError: 'NoResultError',
+    hasTestError: false,
+    testError: 'NoTestError',
   };
 
   async search() {
@@ -49,7 +64,7 @@ export default class Main extends Component {
 
     const localQuery: string = localStorage.PokemonQueryMariyaShusharina;
 
-    if (localQuery !== '') {
+    if (localQuery.trim() !== '') {
       const cardsArr: Card[] = [];
 
       for (let i: number = 0; i < localData.results.length; i++) {
@@ -78,22 +93,41 @@ export default class Main extends Component {
         JSON.stringify('true')
       );
     } else {
-      this.setState({ hasError: true });
-      throw Error('Search query is empty!');
+      this.setState({
+        hasSearchError: true,
+        searchError: 'Search query is empty!',
+      });
+
+      if (this.state.hasSearchError) {
+        console.log(this.state.hasSearchError.toString());
+        console.log(this.state.searchError);
+        throw Error(this.state.searchError);
+      }
+      // this.state.searchError = 'Search query is empty!';
+      // throw Error('Search query is empty!');
     }
 
     this.updateFunc();
   };
 
   updateFunc() {
-    this.setState({ stateChanged: this.state.stateChanged + 1 });
+    this.setState({
+      stateChanged: this.state.stateChanged + 1,
+    });
   }
 
-  throwAnError() {
-    console.log(this.state.hasError);
-    this.setState({ hasError: true });
-    // throw Error('Test Error.');
-  }
+  throwAnError = () => {
+    this.setState({
+      hasTestError: true,
+      testError: 'Test error',
+    });
+
+    if (this.state.hasTestError) {
+      console.log(this.state.hasTestError.toString());
+      console.log(this.state.testError);
+      throw Error(this.state.testError);
+    }
+  };
 
   componentDidMount(): void {
     localStorage.setItem('PokemonQueryMariyaShusharina', '');
@@ -101,30 +135,37 @@ export default class Main extends Component {
   }
 
   render() {
-    if (this.state.hasError) {
-      console.log(this.state.stateChanged);
-      console.log(this.state.hasError);
-      throw new Error('Test Error');
-    }
     return (
       <main>
         <section className="search-section">
-          <input
-            type="search"
-            className="search-field"
-            placeholder="Your input..."
-            onChange={this.storeQuery}
-          ></input>
-          <button onClick={this.filterPokemons}>Search</button>
+          <ErrorBoundary
+            key={this.state.searchError}
+            fallback={
+              <>
+                <input
+                  type="search"
+                  className="search-field"
+                  placeholder="Your input..."
+                  onChange={this.storeQuery}
+                ></input>
+                <button onClick={this.filterPokemons}>Search</button>
+              </>
+            }
+          >
+            <input
+              type="search"
+              className="search-field"
+              placeholder="Your input..."
+              onChange={this.storeQuery}
+            ></input>
+            <button onClick={this.filterPokemons}>Search</button>
+          </ErrorBoundary>
         </section>
-        <ErrorBoundary>
+        <ErrorBoundary key={this.state.resultError}>
           <Results key={this.state.stateChanged} />
         </ErrorBoundary>
-        <ErrorBoundary>
-          <div
-            className="error-btn-container"
-            key={this.state.hasError.toString()}
-          >
+        <ErrorBoundary key={this.state.testError}>
+          <div className="error-btn-container">
             <button className="error-btn" onClick={this.throwAnError}>
               Throw an Error
             </button>

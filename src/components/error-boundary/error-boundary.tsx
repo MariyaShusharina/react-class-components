@@ -1,8 +1,10 @@
 interface ErrorBoundaryElement {
+  key?: Key;
   children: ReactNode;
+  fallback?: JSX.Element;
 }
 
-import { Component, type ReactNode } from 'react';
+import { Component, type JSX, type Key, type ReactNode } from 'react';
 import '../main/results-section/results-section.css';
 
 export default class ErrorBoundary extends Component<ErrorBoundaryElement> {
@@ -12,6 +14,8 @@ export default class ErrorBoundary extends Component<ErrorBoundaryElement> {
     this.state = { hasError: false };
   }
   */
+  static state: { hasError: boolean; error: string };
+
   state = {
     hasError: false,
     error: '',
@@ -36,9 +40,12 @@ export default class ErrorBoundary extends Component<ErrorBoundaryElement> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="error-message">
-          <p>{this.state.error.toString()}</p>
-          <p>Something went wrong! </p>
+        <div>
+          <>{this.props.fallback}</>
+          <div className="error-message">
+            <p>{this.state.error.toString()}</p>
+            <p>Something went wrong! </p>
+          </div>
         </div>
       );
     } else {
