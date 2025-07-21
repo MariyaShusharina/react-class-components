@@ -14,7 +14,7 @@ interface Card {
 }
 
 import { Component /* , type ReactNode */ } from 'react';
-import ErrorBoundary from './results-section/message-components/error-boundary.tsx';
+import ErrorBoundary from '../error-boundary/error-boundary.tsx';
 import Results from './results-section/results-section.tsx';
 import './main-component.css';
 

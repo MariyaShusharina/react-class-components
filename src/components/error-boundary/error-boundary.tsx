@@ -3,7 +3,7 @@ interface ErrorBoundaryElement {
 }
 
 import { Component, type ReactNode } from 'react';
-import '../results-section.css';
+import '../main/results-section/results-section.css';
 
 export default class ErrorBoundary extends Component<ErrorBoundaryElement> {
   /*
