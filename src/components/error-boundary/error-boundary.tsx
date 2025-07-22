@@ -1,31 +1,32 @@
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: string;
+}
+
 interface ErrorBoundaryElement {
   key?: Key;
   children: ReactNode;
   fallback?: JSX.Element;
+  updateMain: () => void;
 }
 
 import { Component, type JSX, type Key, type ReactNode } from 'react';
-import '../main/results-section/results-section.css';
+import './error-boundary.css';
 
-export default class ErrorBoundary extends Component<ErrorBoundaryElement> {
-  /*
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  */
-  static state: { hasError: boolean; error: string };
-
+export default class ErrorBoundary extends Component<
+  ErrorBoundaryElement,
+  ErrorBoundaryState
+> {
   state = {
     hasError: false,
-    error: '',
+    error: 'Something went wrong!',
   };
 
   static getDerivedStateFromError(error: Error) {
     console.log(`getDerivedStateFromError: ${error}`);
     return {
       hasError: true,
-      error: error,
+      error: error.toString(),
     };
   }
 
@@ -33,7 +34,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryElement> {
     console.log(`componentDidCatch: ${error}`);
     return {
       hasError: true,
-      error: error,
+      error: error.toString(),
     };
   }
 
@@ -43,8 +44,16 @@ export default class ErrorBoundary extends Component<ErrorBoundaryElement> {
         <div>
           <>{this.props.fallback}</>
           <div className="error-message">
-            <p>{this.state.error.toString()}</p>
-            <p>Something went wrong! </p>
+            <p>{this.state.error}</p>
+            <button
+              className="try-again-btn"
+              onClick={() => {
+                this.setState({ hasError: false });
+                this.props.updateMain();
+              }}
+            >
+              Refresh
+            </button>
           </div>
         </div>
       );

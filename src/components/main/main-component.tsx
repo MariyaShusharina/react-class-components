@@ -17,26 +17,20 @@ interface State {
   stateChanged: number;
   hasSearchError: boolean;
   searchError: string;
-  hasResultError: boolean;
-  resultError: string;
-  hasTestError: boolean;
-  testError: string;
 }
 
-import { Component /* , type ReactNode */ } from 'react';
+import { Component } from 'react';
 import ErrorBoundary from '../error-boundary/error-boundary.tsx';
 import Results from './results-section/results-section.tsx';
+import SearchSection from './search-section/search-section.tsx';
 import './main-component.css';
+import ErrorButton from './results-section/error-button/error-button.tsx';
 
 export default class Main extends Component {
   state: State = {
     stateChanged: 0,
     hasSearchError: false,
     searchError: 'NoSearchError',
-    hasResultError: false,
-    resultError: 'NoResultError',
-    hasTestError: false,
-    testError: 'NoTestError',
   };
 
   async search() {
@@ -50,14 +44,20 @@ export default class Main extends Component {
   }
 
   storeQuery(ev: React.ChangeEvent) {
-    if (ev.target instanceof HTMLInputElement && ev.target.value !== '') {
-      const val: string = ev.target.value;
+    if (
+      ev.target instanceof HTMLInputElement &&
+      ev.target.value.trim() !== ''
+    ) {
+      const val: string = ev.target.value.trim();
 
       localStorage.setItem('PokemonQueryMariyaShusharina', val);
+    } else {
+      localStorage.setItem('PokeNeedsUpdateMariyaShusharina', 'false');
+      this.updateFunc();
     }
   }
 
-  filterPokemons = async (/* ev: React.MouseEvent */) => {
+  filterPokemons = async () => {
     const localData: DataPokemons = JSON.parse(
       localStorage.PokemonAPIMariyaShusharina
     );
@@ -103,8 +103,6 @@ export default class Main extends Component {
         console.log(this.state.searchError);
         throw Error(this.state.searchError);
       }
-      // this.state.searchError = 'Search query is empty!';
-      // throw Error('Search query is empty!');
     }
 
     this.updateFunc();
@@ -116,19 +114,6 @@ export default class Main extends Component {
     });
   }
 
-  throwAnError = () => {
-    this.setState({
-      hasTestError: true,
-      testError: 'Test error',
-    });
-
-    if (this.state.hasTestError) {
-      console.log(this.state.hasTestError.toString());
-      console.log(this.state.testError);
-      throw Error(this.state.testError);
-    }
-  };
-
   componentDidMount(): void {
     localStorage.setItem('PokemonQueryMariyaShusharina', '');
     this.search();
@@ -138,38 +123,21 @@ export default class Main extends Component {
     return (
       <main>
         <section className="search-section">
-          <ErrorBoundary
-            key={this.state.searchError}
-            fallback={
-              <>
-                <input
-                  type="search"
-                  className="search-field"
-                  placeholder="Your input..."
-                  onChange={this.storeQuery}
-                ></input>
-                <button onClick={this.filterPokemons}>Search</button>
-              </>
-            }
-          >
-            <input
-              type="search"
-              className="search-field"
-              placeholder="Your input..."
-              onChange={this.storeQuery}
-            ></input>
-            <button onClick={this.filterPokemons}>Search</button>
+          <ErrorBoundary updateMain={() => this.updateFunc}>
+            <SearchSection
+              filter={this.filterPokemons}
+              storeQuery={this.storeQuery}
+            />
           </ErrorBoundary>
         </section>
-        <ErrorBoundary key={this.state.resultError}>
-          <Results key={this.state.stateChanged} />
+        <ErrorBoundary updateMain={() => this.updateFunc}>
+          <Results
+            key={this.state.stateChanged}
+            updateMain={() => this.updateFunc}
+          />
         </ErrorBoundary>
-        <ErrorBoundary key={this.state.testError}>
-          <div className="error-btn-container">
-            <button className="error-btn" onClick={this.throwAnError}>
-              Throw an Error
-            </button>
-          </div>
+        <ErrorBoundary updateMain={() => this.updateFunc}>
+          <ErrorButton />
         </ErrorBoundary>
       </main>
     );
