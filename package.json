@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "vite",
+    "devtools": "react-devtools",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
