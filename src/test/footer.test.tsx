@@ -7,9 +7,9 @@ describe('Footer component', () => {
     render(<Footer />);
     screen.debug();
     const year = screen.getByText('2025');
-    expect(year).toBeDefined();
+    expect(year).toBeInTheDocument();
     const link = screen.getByRole('link');
-    expect(link).toBeDefined();
+    expect(link).toBeInTheDocument();
     expect(link).toHaveProperty('href', 'https://github.com/MariyaShusharina/');
     expect(link).toHaveProperty('rel', 'noreferrer');
   });

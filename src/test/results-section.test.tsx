@@ -14,6 +14,6 @@ describe('Results component', () => {
     );
     screen.debug();
     const elem = screen.getByText('Results:');
-    expect(elem).toBeDefined();
+    expect(elem).toBeInTheDocument();
   });
 });

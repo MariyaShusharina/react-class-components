@@ -15,9 +15,11 @@ describe('Search Section component', () => {
       />
     );
     screen.debug();
+
     const btn = screen.getByText('Search');
-    expect(btn).toBeDefined();
+    expect(btn).toBeInTheDocument();
+
     const searchBox = screen.getByRole('searchbox');
-    expect(searchBox).toBeDefined();
+    expect(searchBox).toBeInTheDocument();
   });
 });

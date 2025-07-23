@@ -7,6 +7,6 @@ describe('NothingMessage component', () => {
     render(<NothingMessage />);
     screen.debug();
     const elem = screen.getByRole('paragraph');
-    expect(elem).toBeDefined();
+    expect(elem).toBeInTheDocument();
   });
 });

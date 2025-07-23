@@ -7,7 +7,7 @@ describe('Header component', () => {
     render(<Header />);
     screen.debug();
     const elem = screen.getByRole('heading');
-    expect(elem).toBeDefined();
+    expect(elem).toBeInTheDocument();
     expect(elem).toHaveTextContent('Search Pokemon!');
   });
 });

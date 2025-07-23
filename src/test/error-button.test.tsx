@@ -1,12 +1,46 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import ErrorButton from '../components/main/results-section/error-button/error-button.tsx';
+import ErrorBoundary from '../components/error-boundary/error-boundary.tsx';
 
 describe('Error Button component', () => {
   it('renders correctly', () => {
-    render(<ErrorButton />);
+    render(
+      <ErrorBoundary
+        updateMain={() => {
+          return;
+        }}
+      >
+        <ErrorButton />
+      </ErrorBoundary>
+    );
     screen.debug();
     const elem = screen.getByText('Throw an Error');
-    expect(elem).toBeDefined();
+    expect(elem).toBeInTheDocument();
+  });
+
+  it('Boundary works with coded error', async () => {
+    const ThrowError = () => {
+      throw Error('Error had been thrown!');
+    };
+
+    render(
+      <ErrorBoundary
+        updateMain={() => {
+          return;
+        }}
+      >
+        <ThrowError />
+        <ErrorButton />
+      </ErrorBoundary>
+    );
+
+    const spy = vi.spyOn(console, 'error');
+    spy.mockImplementation(() => {});
+
+    const boundaryContent = screen.getByText('Refresh');
+    expect(boundaryContent).toBeInTheDocument();
+
+    spy.mockRestore();
   });
 });

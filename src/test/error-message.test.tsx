@@ -7,6 +7,6 @@ describe('Error Message component', () => {
     render(<ErrorMessage />);
     screen.debug();
     const elem = screen.getByText('Error!');
-    expect(elem).toBeDefined();
+    expect(elem).toBeInTheDocument();
   });
 });
