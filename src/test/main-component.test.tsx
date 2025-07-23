@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Main from '../components/main/main-component.tsx';
 
 describe('Main component', () => {
@@ -27,5 +27,35 @@ describe('Main component', () => {
 
     const storage = localStorage.getItem('PokemonAPIMariyaShusharina');
     expect(storage).toBeDefined();
+  });
+
+  it('proceed filtering', () => {
+    render(<Main />);
+
+    const mockData = {
+      results: [
+        {
+          name: 'pikachu',
+          url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png',
+        },
+        {
+          name: 'charizard',
+          url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png',
+        },
+      ],
+    };
+
+    localStorage.setItem(
+      'PokemonAPIMariyaShusharina',
+      JSON.stringify(mockData)
+    );
+    localStorage.setItem('PokemonQueryMariyaShusharina', 'pikachu');
+
+    const searchBtn = screen.getByText('Search');
+    fireEvent.click(searchBtn);
+
+    waitFor(() => {
+      expect(localStorage.getItem).toHaveBeenCalled();
+    });
   });
 });
