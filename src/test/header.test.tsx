@@ -1,0 +1,13 @@
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import Header from '../components/header/header.tsx';
+
+describe('Header component', () => {
+  it('renders correctly', () => {
+    render(<Header />);
+    screen.debug();
+    const elem = screen.getByRole('heading');
+    expect(elem).toBeDefined();
+    expect(elem).toHaveTextContent('Search Pokemon!');
+  });
+});
