@@ -1,34 +1,26 @@
-interface SmallState {
-  stateChanged: number;
-}
-
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import '../../main-component.css';
 
-export default class ErrorButton extends Component {
-  state: SmallState = {
-    stateChanged: 0,
-  };
+export default function ErrorButton() {
+  const [stateChanged, changeState] = useState(0);
 
-  componentDidUpdate(): void {
-    if (this.state.stateChanged !== 0) {
-      this.setState({ stateChanged: 0 });
+  useEffect(() => {
+    if (stateChanged !== 0) {
+      changeState(0);
       throw Error('Test Error!');
     }
-  }
+  }, [stateChanged]);
 
-  render() {
-    return (
-      <div className="error-btn-container">
-        <button
-          className="error-btn"
-          onClick={() => {
-            this.setState({ stateChanged: this.state.stateChanged + 1 });
-          }}
-        >
-          Throw an Error
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="error-btn-container">
+      <button
+        className="error-btn"
+        onClick={() => {
+          changeState(stateChanged + 1);
+        }}
+      >
+        Throw an Error
+      </button>
+    </div>
+  );
 }
