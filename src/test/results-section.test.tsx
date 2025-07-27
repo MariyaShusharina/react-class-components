@@ -9,7 +9,7 @@ describe('Results component', () => {
         updateMain={() => {
           return;
         }}
-        key={1}
+        state={1}
       />
     );
     screen.debug();

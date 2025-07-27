@@ -16,10 +16,14 @@ export default class SearchSection extends Component<SerachProps, SmallState> {
   };
 
   componentDidUpdate(): void {
-    const localQuery: string = localStorage.PokemonQueryMariyaShusharina;
+    if (localStorage.PokemonQueryMariyaShusharina) {
+      const localQuery: string = localStorage
+        .getItem('PokemonQueryMariyaShusharina')!
+        .toString();
 
-    if (localQuery.trim() == '') {
-      throw Error('Search query is empty!');
+      if (localQuery.trim() == '') {
+        throw Error('Search query is empty!');
+      }
     }
   }
 

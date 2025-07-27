@@ -43,76 +43,77 @@ export default class Main extends Component {
     localStorage.setItem('PokemonAPIMariyaShusharina', JSON.stringify(data));
   }
 
-  storeQuery(ev: React.ChangeEvent) {
-    if (
-      ev.target instanceof HTMLInputElement &&
-      ev.target.value.trim() !== ''
-    ) {
+  storeQuery = (ev: React.ChangeEvent) => {
+    if (ev.target instanceof HTMLInputElement && ev.target.value.trim() != '') {
       const val: string = ev.target.value.trim();
 
-      localStorage.setItem('PokemonQueryMariyaShusharina', val);
+      localStorage.setItem('PokemonQueryMariyaShusharina', val.toString());
     } else {
       localStorage.setItem('PokeNeedsUpdateMariyaShusharina', 'false');
       this.updateFunc();
     }
-  }
+  };
 
   filterPokemons = async () => {
     const localData: DataPokemons = JSON.parse(
-      localStorage.PokemonAPIMariyaShusharina
+      localStorage.getItem('PokemonAPIMariyaShusharina') as string
     );
 
-    const localQuery: string = localStorage.PokemonQueryMariyaShusharina;
+    if (localStorage.PokemonQueryMariyaShusharina) {
+      const localQuery: string = localStorage.getItem(
+        'PokemonQueryMariyaShusharina'
+      ) as string;
 
-    if (localQuery.trim() !== '') {
-      const cardsArr: Card[] = [];
+      if (localQuery.trim() !== '') {
+        const cardsArr: Card[] = [];
 
-      for (let i: number = 0; i < localData.results.length; i++) {
-        if (localData.results[i].name.includes(localQuery)) {
-          const pokeId: number = i + 1;
-          let pokeName = localData.results[i].name;
-          pokeName = pokeName[0].toUpperCase() + pokeName.slice(1);
-          const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeId}.png`;
+        for (let i: number = 0; i < localData.results.length; i++) {
+          if (localData.results[i].name.includes(localQuery)) {
+            const pokeId: number = i + 1;
+            let pokeName = localData.results[i].name;
+            pokeName = pokeName[0].toUpperCase() + pokeName.slice(1);
+            const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeId}.png`;
 
-          const card: Card = {
-            id: i + 1,
-            title: pokeName,
-            source: imgSrc,
-          };
+            const card: Card = {
+              id: i + 1,
+              title: pokeName,
+              source: imgSrc,
+            };
 
-          cardsArr.push(card);
+            cardsArr.push(card);
+          }
         }
-      }
 
-      localStorage.setItem(
-        'PokeResultMariyaShusharina',
-        JSON.stringify(cardsArr)
-      );
-      localStorage.setItem(
-        'PokeNeedsUpdateMariyaShusharina',
-        JSON.stringify('true')
-      );
-    } else {
-      this.setState({
-        hasSearchError: true,
-        searchError: 'Search query is empty!',
-      });
+        localStorage.setItem(
+          'PokeResultMariyaShusharina',
+          JSON.stringify(cardsArr)
+        );
+        localStorage.setItem(
+          'PokeNeedsUpdateMariyaShusharina',
+          JSON.stringify('true')
+        );
+      } else {
+        this.setState({
+          hasSearchError: true,
+          searchError: 'Search query is empty!',
+        });
 
-      if (this.state.hasSearchError) {
-        console.log(this.state.hasSearchError.toString());
-        console.log(this.state.searchError);
-        throw Error(this.state.searchError);
+        if (this.state.hasSearchError) {
+          console.log(this.state.hasSearchError.toString());
+          console.log(this.state.searchError);
+          throw Error(this.state.searchError);
+        }
       }
     }
 
     this.updateFunc();
   };
 
-  updateFunc() {
+  updateFunc = () => {
     this.setState({
       stateChanged: this.state.stateChanged + 1,
     });
-  }
+  };
 
   componentDidMount(): void {
     localStorage.setItem('PokemonQueryMariyaShusharina', '');
@@ -123,20 +124,20 @@ export default class Main extends Component {
     return (
       <main>
         <section className="search-section">
-          <ErrorBoundary updateMain={() => this.updateFunc}>
+          <ErrorBoundary updateMain={this.updateFunc}>
             <SearchSection
               filter={this.filterPokemons}
-              storeQuery={this.storeQuery}
+              storeQuery={(ev) => this.storeQuery(ev)}
             />
           </ErrorBoundary>
         </section>
-        <ErrorBoundary updateMain={() => this.updateFunc}>
+        <ErrorBoundary updateMain={this.updateFunc}>
           <Results
-            key={this.state.stateChanged}
-            updateMain={() => this.updateFunc}
+            state={this.state.stateChanged}
+            updateMain={this.updateFunc}
           />
         </ErrorBoundary>
-        <ErrorBoundary updateMain={() => this.updateFunc}>
+        <ErrorBoundary updateMain={this.updateFunc}>
           <ErrorButton />
         </ErrorBoundary>
       </main>
