@@ -4,13 +4,13 @@ interface ErrorBoundaryState {
 }
 
 interface ErrorBoundaryElement {
-  key?: Key;
+  state?: number;
   children: ReactNode;
   fallback?: JSX.Element;
   updateMain: () => void;
 }
 
-import { Component, type JSX, type Key, type ReactNode } from 'react';
+import { Component, type JSX, type ReactNode } from 'react';
 import './error-boundary.css';
 
 export default class ErrorBoundary extends Component<

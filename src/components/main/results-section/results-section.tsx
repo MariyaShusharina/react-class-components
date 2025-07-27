@@ -3,7 +3,7 @@ interface SmallState {
 }
 
 interface ResultsProps {
-  key: Key;
+  state: number;
   updateMain: () => void;
 }
 
@@ -13,7 +13,7 @@ interface Card {
   source: string;
 }
 
-import { Component, type JSX, type Key } from 'react';
+import { Component, type JSX } from 'react';
 import NothingMessage from './message-components/nothing-message.tsx';
 import './results-section.css';
 
@@ -24,7 +24,9 @@ export default class Results extends Component<ResultsProps, SmallState> {
 
   cards: Card[] = [];
 
-  localQuery: string = localStorage.PokemonQueryMariyaShusharina;
+  localQuery: string = localStorage.getItem(
+    'PokemonQueryMariyaShusharina'
+  ) as string;
 
   componentDidUpdate(): void {
     localStorage.setItem(
@@ -39,7 +41,9 @@ export default class Results extends Component<ResultsProps, SmallState> {
     let list: JSX.Element[] | undefined = undefined;
 
     if (localStorage.PokeResultMariyaShusharina) {
-      this.cards = JSON.parse(localStorage.PokeResultMariyaShusharina);
+      this.cards = JSON.parse(
+        localStorage.getItem('PokeResultMariyaShusharina') as string
+      );
 
       if (this.cards.length > 0) {
         list = this.cards.map((item) => {
