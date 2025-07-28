@@ -3,6 +3,10 @@
   line-height: 1.5;
   font-weight: 400;
 
+  --black: rgb(0, 0, 0);
+  --grey: rgb(200, 200, 200);
+  --light-grey: rgb(240, 240, 240);
+
   --dark-blue: rgb(23, 122, 152);
   --blue: rgb(55, 174, 210);
   --light-blue: rgb(155, 226, 248);
@@ -22,6 +26,10 @@
 @font-face {
   font-family: CenturyGothic;
   src: url('./assets/fonts/CenturyGothic.ttf');
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -61,11 +69,9 @@ input {
 button {
   cursor: pointer;
   padding: 0.3rem 0.5rem;
+  width: fit-content;
 }
 
 button:hover {
   background-color: var(--light-blue);
-}
-
-@media (prefers-color-scheme: light) {
 }
