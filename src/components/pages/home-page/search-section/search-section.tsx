@@ -4,7 +4,7 @@ interface SerachProps {
 }
 
 import { useState, useEffect } from 'react';
-import '../main-component.css';
+import '../home-page.css';
 
 export default function SearchSection(props: SerachProps) {
   const [stateChanged, changeState] = useState(0);

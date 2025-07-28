@@ -14,13 +14,13 @@ interface Card {
 }
 
 import { useState, useEffect } from 'react';
-import ErrorBoundary from '../error-boundary/error-boundary.tsx';
+import ErrorBoundary from '../../error-boundary/error-boundary.tsx';
 import Results from './results-section/results-section.tsx';
 import SearchSection from './search-section/search-section.tsx';
-import './main-component.css';
+import './home-page.css';
 import ErrorButton from './results-section/error-button/error-button.tsx';
 
-export default function Main() {
+export default function Home() {
   const [stateChanged, changeState] = useState(0);
   const [hasSearchError, setSearchError] = useState(false);
   const [searchError, setSearchErrorMessage] = useState('NoSearchError');

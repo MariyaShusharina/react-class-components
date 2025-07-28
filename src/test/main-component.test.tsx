@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Main from '../components/main/main-component.tsx';
+import Main from '../components/pages/home-page/home-page-component.tsx';
 
 describe('Main component', () => {
   it('renders correctly', () => {
