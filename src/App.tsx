@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/layout/layout.tsx';
 import Home from './components/pages/home-page/home-page-component.tsx';
 import About from './components/pages/about-page/about-component.tsx';
@@ -11,7 +11,8 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
-        <Route path="*" element={<Error404Page />} />
+        <Route path="error-404" element={<Error404Page />} />
+        <Route path="*" element={<Navigate replace to="/error-404" />} />
       </Route>
     </Routes>
   );
