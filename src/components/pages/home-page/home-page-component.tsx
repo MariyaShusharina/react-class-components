@@ -17,8 +17,8 @@ import { useState, useEffect } from 'react';
 import ErrorBoundary from '../../error-boundary/error-boundary.tsx';
 import Results from './results-section/results-section.tsx';
 import SearchSection from './search-section/search-section.tsx';
-import './home-page.css';
 import ErrorButton from './results-section/error-button/error-button.tsx';
+import './home-page.css';
 
 export default function Home() {
   const [stateChanged, changeState] = useState(0);
@@ -109,7 +109,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <main id="home">
       <section className="search-section">
         <ErrorBoundary updateMain={updateFunc}>
           <SearchSection

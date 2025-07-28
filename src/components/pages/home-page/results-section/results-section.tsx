@@ -62,7 +62,7 @@ export default function Results(props: ResultsProps) {
 
   return (
     <section className="results-section">
-      <h2>Results:</h2>
+      <h2 className="h2-results">Results:</h2>
       <div className="results-container">
         {shouldUpdate && cards.length > 0 ? (
           <div className="cards-container">{list}</div>
