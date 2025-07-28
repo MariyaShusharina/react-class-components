@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import ErrorButton from '../components/pages/home-page/results-section/error-button/error-button.tsx';
 import ErrorBoundary from '../components/error-boundary/error-boundary.tsx';
 
@@ -42,5 +42,25 @@ describe('Error Button component', () => {
     expect(boundaryContent).toBeInTheDocument();
 
     spy.mockRestore();
+  });
+
+  it('Boundary works with Button error', async () => {
+    render(
+      <ErrorBoundary
+        updateMain={() => {
+          return;
+        }}
+      >
+        <ErrorButton />
+      </ErrorBoundary>
+    );
+
+    const testErrorBtn = screen.getByText('Throw an Error');
+    fireEvent.click(testErrorBtn);
+
+    waitFor(() => {
+      const boundaryContent = screen.getByText('Refresh');
+      expect(boundaryContent).toBeInTheDocument();
+    });
   });
 });
