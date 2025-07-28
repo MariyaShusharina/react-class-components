@@ -1,10 +1,10 @@
 import { describe, it } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Main from '../components/pages/home-page/home-page-component.tsx';
+import Home from '../components/pages/home-page/home-page-component.tsx';
 
-describe('Main component', () => {
+describe('Home component', () => {
   it('renders correctly', () => {
-    render(<Main />);
+    render(<Home />);
     screen.debug();
 
     const btn = screen.getByText('Search');
@@ -23,14 +23,14 @@ describe('Main component', () => {
   });
 
   it('has set localStorage', () => {
-    render(<Main />);
+    render(<Home />);
 
     const storage = localStorage.getItem('PokemonAPIMariyaShusharina');
     expect(storage).toBeDefined();
   });
 
   it('proceed filtering', () => {
-    render(<Main />);
+    render(<Home />);
 
     const mockData = {
       results: [
