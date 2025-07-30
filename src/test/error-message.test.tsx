@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import ErrorMessage from '../components/main/results-section/message-components/error-message.tsx';
+import ErrorMessage from '../components/pages/home-page/results-section/message-components/error-message.tsx';
 
 describe('Error Message component', () => {
   it('renders correctly', () => {

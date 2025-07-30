@@ -14,11 +14,12 @@
   overflow: clip;
 }
 
-h2 {
+.h2-results {
   margin: 0 1rem;
 }
 
 .nothing-message {
+  padding: 1rem;
   display: flex;
   align-self: center;
 }

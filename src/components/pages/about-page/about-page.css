@@ -1,0 +1,18 @@
+#about {
+  margin-bottom: auto;
+  padding: 2rem 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.h2-about {
+  margin: 0 1rem 1rem;
+}
+
+.p-about {
+  margin: 0 1rem;
+}

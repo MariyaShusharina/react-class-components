@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import SearchSection from '../components/main/search-section/search-section.tsx';
+import SearchSection from '../components/pages/home-page/search-section/search-section.tsx';
 
 describe('Search Section component', () => {
   it('renders correctly', () => {

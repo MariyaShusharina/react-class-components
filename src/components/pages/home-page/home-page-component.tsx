@@ -13,27 +13,19 @@ interface Card {
   source: string;
 }
 
-interface State {
-  stateChanged: number;
-  hasSearchError: boolean;
-  searchError: string;
-}
-
-import { Component } from 'react';
-import ErrorBoundary from '../error-boundary/error-boundary.tsx';
+import { useState, useEffect } from 'react';
+import ErrorBoundary from '../../error-boundary/error-boundary.tsx';
 import Results from './results-section/results-section.tsx';
 import SearchSection from './search-section/search-section.tsx';
-import './main-component.css';
 import ErrorButton from './results-section/error-button/error-button.tsx';
+import './home-page.css';
 
-export default class Main extends Component {
-  state: State = {
-    stateChanged: 0,
-    hasSearchError: false,
-    searchError: 'NoSearchError',
-  };
+export default function Home() {
+  const [stateChanged, changeState] = useState(0);
+  const [hasSearchError, setSearchError] = useState(false);
+  const [searchError, setSearchErrorMessage] = useState('NoSearchError');
 
-  async search() {
+  async function search() {
     const query: string =
       'https://pokeapi.co/api/v2/pokemon?limit=1000&offset=0';
 
@@ -43,18 +35,18 @@ export default class Main extends Component {
     localStorage.setItem('PokemonAPIMariyaShusharina', JSON.stringify(data));
   }
 
-  storeQuery = (ev: React.ChangeEvent) => {
+  const storeQuery = (ev: React.ChangeEvent) => {
     if (ev.target instanceof HTMLInputElement && ev.target.value.trim() != '') {
       const val: string = ev.target.value.trim();
 
       localStorage.setItem('PokemonQueryMariyaShusharina', val.toString());
     } else {
       localStorage.setItem('PokeNeedsUpdateMariyaShusharina', 'false');
-      this.updateFunc();
+      updateFunc();
     }
   };
 
-  filterPokemons = async () => {
+  const filterPokemons = async () => {
     const localData: DataPokemons = JSON.parse(
       localStorage.getItem('PokemonAPIMariyaShusharina') as string
     );
@@ -93,54 +85,45 @@ export default class Main extends Component {
           JSON.stringify('true')
         );
       } else {
-        this.setState({
-          hasSearchError: true,
-          searchError: 'Search query is empty!',
-        });
+        setSearchError(true);
+        setSearchErrorMessage('Search query is empty!');
 
-        if (this.state.hasSearchError) {
-          console.log(this.state.hasSearchError.toString());
-          console.log(this.state.searchError);
-          throw Error(this.state.searchError);
+        if (hasSearchError) {
+          console.log(hasSearchError.toString());
+          console.log(searchError);
+          throw Error(searchError);
         }
       }
     }
 
-    this.updateFunc();
+    updateFunc();
   };
 
-  updateFunc = () => {
-    this.setState({
-      stateChanged: this.state.stateChanged + 1,
-    });
+  const updateFunc = () => {
+    changeState(stateChanged + 1);
   };
 
-  componentDidMount(): void {
+  useEffect(() => {
     localStorage.setItem('PokemonQueryMariyaShusharina', '');
-    this.search();
-  }
+    search();
+  }, []);
 
-  render() {
-    return (
-      <main>
-        <section className="search-section">
-          <ErrorBoundary updateMain={this.updateFunc}>
-            <SearchSection
-              filter={this.filterPokemons}
-              storeQuery={(ev) => this.storeQuery(ev)}
-            />
-          </ErrorBoundary>
-        </section>
-        <ErrorBoundary updateMain={this.updateFunc}>
-          <Results
-            state={this.state.stateChanged}
-            updateMain={this.updateFunc}
+  return (
+    <main id="home">
+      <section className="search-section">
+        <ErrorBoundary updateMain={updateFunc}>
+          <SearchSection
+            filter={filterPokemons}
+            storeQuery={(ev) => storeQuery(ev)}
           />
         </ErrorBoundary>
-        <ErrorBoundary updateMain={this.updateFunc}>
-          <ErrorButton />
-        </ErrorBoundary>
-      </main>
-    );
-  }
+      </section>
+      <ErrorBoundary updateMain={updateFunc}>
+        <Results state={stateChanged} updateMain={updateFunc} />
+      </ErrorBoundary>
+      <ErrorBoundary updateMain={updateFunc}>
+        <ErrorButton />
+      </ErrorBoundary>
+    </main>
+  );
 }

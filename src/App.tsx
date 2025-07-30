@@ -1,19 +1,21 @@
-import { Component } from 'react';
-import Footer from './components/footer/footer.tsx';
-import Header from './components/header/header.tsx';
-import Main from './components/main/main-component.tsx';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Layout from './components/layout/layout.tsx';
+import Home from './components/pages/home-page/home-page-component.tsx';
+import About from './components/pages/about-page/about-component.tsx';
+import Error404Page from './components/pages/error-404-page/error-404-component.tsx';
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <>
-        <Header />
-        <Main />
-        <Footer />
-      </>
-    );
-  }
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="error-404" element={<Error404Page />} />
+        <Route path="*" element={<Navigate replace to="/error-404" />} />
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;
